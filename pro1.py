@@ -11,7 +11,7 @@ import warnings
 warnings.filterwarnings('ignore', category=UserWarning)
 plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] = False
-%pip install pandas-summary
+# %pip install pandas-summary
 
 # 파일들이 있는 폴더 경로
 folder_path = 'C:/Users/mumu1/Desktop/project_movie_data/project_dataset'
@@ -242,10 +242,10 @@ total_neg = df_order[(df_order[time_cols] < 0).any(axis=1)].shape[0]
 # 결과 출력
 print("컬럼별 음수 개수:", neg_counts)
 print("전체 음수 개수 (한 행이라도 음수):", total_neg)
-1) 데이터 무결성 & 계산값 검증
+# 1) 데이터 무결성 & 계산값 검증
 
-이미 계산해둔 4개 지표가 맞는지 **허용 오차(±1초=1/86400일)**로 교차검증합니다.
-또한 음수/이상치, delivered 이외 상태 존재 여부를 점검합니다.
+# 이미 계산해둔 4개 지표가 맞는지 **허용 오차(±1초=1/86400일)**로 교차검증합니다.
+# 또한 음수/이상치, delivered 이외 상태 존재 여부를 점검합니다.
 # 1-1. datetime dtype 보장
 datetime_cols = [
     "order_purchase_timestamp", "order_approved_at",
@@ -437,7 +437,7 @@ print(df_lavel_payments['payment_label'].value_counts())
 print(df_lavel_payments[df_lavel_payments['payment_value'] == 0].head(10))
 df_customers.head()
 # MERGE
-join_order_c = df_order_clean + df_customers + df_payments + df_order_items
+# join_order_c = df_order_clean + df_customers + df_payments + df_order_items
 '''
 MERGE
 customer 데이터 탐색: 이상치 처리 안함, 데이터 손실 최소화
