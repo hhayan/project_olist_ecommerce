@@ -149,7 +149,7 @@ review_score (별점): 결측치 없음 (모든 리뷰는 점수 필수).
 '''
 
 # --- 리뷰 메시지 작성 여부 플래그 생성 ---
-df__reviews["has_comment"] = df_order_reviews["review_comment_message"].notnull().astype(int)
+df_order_reviews["has_comment"] = df_order_reviews["review_comment_message"].notnull().astype(int)
 
 # --- 리뷰 제목/메시지 결측치 "No Comment"로 치환 ---
 df_order_reviews["review_comment_title"] = df_order_reviews["review_comment_title"].fillna("No Comment")
@@ -599,8 +599,10 @@ print(state_summary.head())
 city_summary = rfm_region.groupby('customer_city')[['Recency','Frequency','Monetary']].mean().round(1)
 print("\n=== 도시(City)별 평균 RFM ===")
 print(city_summary.head())
-# 지역별(state, city별) 고객을 세분화하여 세그먼트별 특징
+'''
+지역별(state, city별) 고객을 세분화하여 세그먼트별 특징
 고객등급 별 구매금액
 customer_stats['평균장바구니크기'] = customer_stats['총구매량'] / customer_stats['Frequency']
 customer_stats['거래당상품종류'] = customer_stats['상품종류수'] / customer_stats['Frequency']
 구매 기간 및 주기 계산 (추가하기)
+'''
