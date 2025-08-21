@@ -24,6 +24,7 @@ o_df_order_payments = pd.read_csv(os.path.join(folder_path, 'olist_order_payment
 o_df_order_reviews = pd.read_csv(os.path.join(folder_path, 'olist_order_reviews_dataset.csv'), encoding='ISO-8859-1')
 o_df_products = pd.read_csv(os.path.join(folder_path, 'olist_products_dataset.csv'), encoding='ISO-8859-1')
 o_df_sellers = pd.read_csv(os.path.join(folder_path, 'olist_sellers_dataset.csv'), encoding='ISO-8859-1')
+o_product_category_name_translation = pd.read_csv(os.path.join(folder_path, 'product_category_name_translation.csv'), encoding='ISO-8859-1')
 
 print("✅ 모든 파일이 개별적으로 메모리에 로드되었습니다.")
 
@@ -35,7 +36,9 @@ df_order_payments = o_df_order_payments.copy()
 df_order_reviews = o_df_order_reviews.copy()
 df_products = o_df_products.copy()
 df_sellers = o_df_sellers.copy()
-# 7개 데이터프레임의 결측값 분석
+df_product_category_name_translation = o_product_category_name_translation.copy()
+
+# 8개 데이터프레임의 결측값 분석
 def check_missing(dfs, df_names):
     for df, name in zip(dfs, df_names):
         print(f"\n📊 {name} 데이터프레임 결측값 분석")
@@ -58,13 +61,13 @@ def check_missing(dfs, df_names):
 original_dfs = [ 
     o_df_customers, o_df_geolocation, o_df_order_items,
     o_df_order_payments, o_df_order_reviews, o_df_products,
-    o_df_sellers
+    o_df_sellers, o_product_category_name_translation,
 ]
 
 df_names = [
     "customers", "geolocation", "order_items",
     "order_payments", "order_reviews", "products",
-    "sellers"
+    "sellers", "product_category_name_translation",
 ]
 
 check_missing(original_dfs, df_names)
