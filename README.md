@@ -57,6 +57,7 @@ merge_full: merge_product_cate + df_join_ocpi
 (과제2 배송지연 확인용) inner_join
 1. df_order + df_order_items = join_order_items
 2. join_order_items + df_customers = jj_order_items_cu
+3. (seller_id) jj_order_items_cu + df_sellers = join_ois
 
 # 특이사항
 예상 배송일이랑 실제 배송일을 가지고 계산, 예상일보다 빨리 도착한 경우 음수가 나오는 걸로 설정
