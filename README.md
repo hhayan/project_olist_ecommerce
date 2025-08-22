@@ -2,6 +2,7 @@
 Sesac LLM DA  1차 프로젝트 
 
 # 데이터 탐색
+olist_orders: order_status - shipped 상품이 판매자나 물류센터에서 발송되어 고객에게 전달되기 위한 준비가 완료
 Order Items 데이터셋 분석: 각 주문(order_id) 내에서 구매된 상품(아이템)에 대한 정보
 
 총 주문 가치 계산:
@@ -48,8 +49,14 @@ price 컬럼의 경우, 6735.00과 같은 높은 가격은 매우 비싼 고가�
 freight_value 컬럼의 경우, 409.68과 같은 높은 운송료는 매우 무거운 상품이나 국제 배송의 결과일 수 있습니다.
 
 # merge
-1. df_order + df_order_items = join_order_items
+join_order_customer
+join_order_payments
+df_join_ocpi: o_df_customers, o_df_order_items, o_df_order_payments, o_df_products
+merge_full: merge_product_cate + df_join_ocpi
+
 (과제2 배송지연 확인용) inner_join
+1. df_order + df_order_items = join_order_items
+2. join_order_items + df_customers = jj_order_items_cu
 
 # 특이사항
 예상 배송일이랑 실제 배송일을 가지고 계산, 예상일보다 빨리 도착한 경우 음수가 나오는 걸로 설정
