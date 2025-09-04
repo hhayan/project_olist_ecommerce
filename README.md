@@ -22,6 +22,9 @@ payment_value = sum(price) + sum(freight_value)
 payments data: freight_value: 개별 아이템에 할당된 운송료
 
 # 전처리
+# df_review
+리뷰 없는 결측치 50% 이상, 
+
 # df_produts
 결측치 비율 낮음 삭제 처리
 이상치: 음수 없음, 0 비율 낮음 삭제 처리
