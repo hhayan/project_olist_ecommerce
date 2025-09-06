@@ -1,7 +1,25 @@
 # project_ecommers_data
 Sesac LLM DA  1차 프로젝트 
 
-# 데이터 탐색
+# 데이터 탐색 EDA
+0인 데이터
+배송료(freight_value)가 0인 비율이 0.34%
+
+# 이상치
+order_item['price'],['fight_value]: 시각화
+payment_sequential는 단일 주문에 대한 결제가 여러 번 이루어졌을 때 순서
+평균값(Mean: 1.09)과 75% 지점(75%: 1)이 1이라는 것은 **대부분의 주문이 한 번의 결제(단일 결제)**로 이루어졌다는 것을 보여줍니다. 29와 같은 높은 값은 극히 드문 다중 결제 사례에 해당
+
+payment_value(거래금액): 최소값은 0이고 최대값은 약 13,664에 달하며, 대부분의 거래가 낮은 금액대에 분포
+review_score: 높은 편
+
+
+# 데이터 관계 분석
+- 가격과 배송비의 관계: 가격대가 높은 상품이 배송비도 높은 경향이 있는지 분석
+- payment_sequential(결제 종류), payment_installments(결제 카드) 관계 분석 
+
+# 
+
 olist_orders: order_status - shipped 상품이 판매자나 물류센터에서 발송되어 고객에게 전달되기 위한 준비가 완료
 Order Items 데이터셋 분석: 각 주문(order_id) 내에서 구매된 상품(아이템)에 대한 정보
 
@@ -21,12 +39,12 @@ payment_value = sum(price) + sum(freight_value)
 ----------------------------------------------------------------------
 payments data: freight_value: 개별 아이템에 할당된 운송료
 
-# 전처리
-# df_review
-리뷰 없는 결측치 50% 이상, 
+# 데이터 전처리: 결측치, 이상치(0, 음수, IQR) (고유값, 중복 데이터, 상관관계X)
+# df_order_reviews
+리뷰 없는 결측치 50% 이상, 'no comment' 값 채움
 
 # df_produts
-결측치 비율 낮음 삭제 처리
+결측치 비율 낮음 1.85% 삭제 처리
 이상치: 음수 없음, 0 비율 낮음 삭제 처리
 
 # df_order
