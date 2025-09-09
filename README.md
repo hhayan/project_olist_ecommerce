@@ -40,21 +40,19 @@ Order Items 데이터셋 분석: 각 주문(order_id) 내에서 구매된 상품
 
 order_items["total_order_value"]컬럼, 총매출 컬럼 추가
 
-[배송시간]
-1. purchase_to_approved (구매 → 승인)
-0일: 결제 즉시 승인된 건 → 정상
-음수: 논리적으로 불가능 (승인일이 구매일보다 앞서는 건 오류) → 이상치
+df_order
+-EDA: 주문시간대 가장 높은 시간: 11시, 1시~4시
+주문상태-배달완료가 가장 많음
 
-2. approved_to_carrier (승인 → 운송사 전달)
-0일: 승인 직후 바로 운송사에 전달 → 정상
-음수: 운송사가 승인 전에 물품을 받는 건 불가능 → 이상치
+-전처리
+결측치 비율 낮음 삭제
+[배송시간] 이상치 없음
+비즈니스 로직 검증
+purchase → approved는 절대 음수가 될 수 없음 → 데이터 오류이므로 이상치 처리 
+approved → carrier도 음수는 말이 안 됨 → 이상치 처리.
+carrier → customer 역시 음수는 불가능 → 이상치 처리.
+purchase → estimated에서 음수는 “예상보다 빨리 도착” 상황 → 이상치 아님.
 
-3. carrier_to_customer (운송사 → 고객 도착)
-0일: 고객이 직접 매장에서 픽업했거나 같은 날 배송된 경우 → 가능
-음수: 고객에게 도착일이 운송사 전달일보다 앞서는 건 불가능 → 이상치
-
-4. purchase_to_customer (구매 → 고객 수령)
-0일: 당일 배송 → 가능
 ----------------------------------------------------------------------
 # 데이터 전처리: 결측치, 이상치(0, 음수, IQR) (고유값, 중복 데이터, 상관관계X)
 # df_order_reviews
@@ -87,7 +85,5 @@ merge_full: merge_product_cate + df_join_ocpi
 2. join_order_items + df_customers = jj_order_items_cu
 3. (seller_id) jj_order_items_cu + df_sellers = join_ois
 
-# 특이사항
-예상 배송일이랑 실제 배송일을 가지고 계산, 예상일보다 빨리 도착한 경우 음수가 나오는 걸로 설정
 
 
