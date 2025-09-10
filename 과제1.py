@@ -1,3 +1,4 @@
+
 import seaborn as sns
 import numpy as np
 import pandas as pd
@@ -360,32 +361,43 @@ print("이상치 비율:", (df_order_items['outlier']==-1).mean()*100, "%")
 # 추후 “전체 평균 배송비” vs “이상치 제외 평균 배송비” 분석 예정
 df_order_items["is_outlier"] = (df_order_items["outlier"] == -1).astype(int)
 '''
-df_order_reviews 
+df_order_reviews 전처리
 
-1. 데이터 상황 요약
+- 전처리 전 
 review_comment_title: 결측치 88% → 고객 대부분이 제목은 아예 작성하지 않음.
 review_comment_message: 결측치 59% → 절반 이상이 코멘트를 남기지 않음.
-제목 없이 내용 쓴 리뷰: 88-59= 29%
+review_score → 전부 존재
+- 전처리 후
+has_text → 0 = 점수만, 1 = 점수+텍스트
 '''
+# 목적: 배송 지연 ↔ 리뷰 점수, 텍스트 작성 여부 분석
 
-# --- 결측치 대체: 'No Comment'로 치환 ---
-df_order_reviews["review_comment_title"] = df_order_reviews["review_comment_title"].fillna("No Comment_title")
+# 1) 공백/빈 문자열을 결측으로 정규화
+for col in ["review_comment_title", "review_comment_message"]:
+    df_order_reviews[col] = df_order_reviews[col].astype("object")
+    df_order_reviews[col] = df_order_reviews[col].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    df_order_reviews[col] = df_order_reviews[col].replace("", np.nan)
+
+# 2) 결측 치환 (분석 구분을 위해 명시 텍스트 사용)
+df_order_reviews["review_comment_title"]   = df_order_reviews["review_comment_title"].fillna("No Comment_title")
 df_order_reviews["review_comment_message"] = df_order_reviews["review_comment_message"].fillna("No Comment_message")
 
-# --- 리뷰 작성 여부 플래그 생성 ---
-df_order_reviews["has_message"] = df_order_reviews["review_comment_message"].apply(lambda x: 0 if x == 'No Comment' else 1)
-df_order_reviews["has_title"] = df_order_reviews["review_comment_title"].apply(lambda x: 0 if x == 'No Comment' else 1)
+# 3) 리뷰 작성 여부 (텍스트 기준)
+df_order_reviews["has_text"] = (
+    (df_order_reviews["review_comment_title"]   != "No Comment_title") |
+    (df_order_reviews["review_comment_message"] != "No Comment_message")
+).astype(int)
 
-# 확인
-# print("📌 클리닝된 데이터프레임 (일부)")
-# print(df_order_reviews.head())
+# 4) 타입 변환
+df_order_reviews["review_score"] = pd.to_numeric(df_order_reviews["review_score"], errors="coerce")
+df_order_reviews["review_creation_date"] = pd.to_datetime(df_order_reviews["review_creation_date"], errors="coerce")
 
-print("\n--- 리뷰 작성 여부 플래그 분포 ---")
-print("📌 has_message 분포")
-print(df_order_reviews["has_message"].value_counts(normalize=True).round(3) * 100)
-print("\n📌 has_title 분포")
-print(df_order_reviews["has_title"].value_counts(normalize=True).round(3) * 100)
-
+# 5) 확인
+print("✅ df_order_reviews preview")
+print(df_order_reviews.head(3))
+print("\n리뷰 총 개수:", len(df_order_reviews))
+print("has_text 분포:")
+print((df_order_reviews["has_text"].value_counts(normalize=True)*100).round(1))
 ## df_order_items 컬럼 추가
 # df_order_items['The total order value'] : order_id별 총구매액
 # df_order_items['Total Sales'] : 총매출
@@ -590,8 +602,6 @@ print("✅ Shapes (oic, sellers, merged):",
       merge_oic.shape, df_sellers_dedup.shape, merge_oics.shape)
 
 # 과제 1: 고객 세분화 및 RFM 분석
-# 브라질 지역별 고객들의 구매 패턴을 분석하여 RFM(Recency, Frequency, Monetary) 모델을 구축하고,
-# 고객을 세분화하여 각 세그먼트의 특성과 비즈니스 전략을 제시
 # 1. 기준일 설정 (Recency 계산용)
 # ---------------------------
 today_date = merge_oics['order_purchase_timestamp'].max() + pd.Timedelta(days=1)

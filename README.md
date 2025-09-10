@@ -70,6 +70,9 @@ voucher        0.056
 payment_type
 voucher        6
 not_defined    3 <- 해당 데이터만 삭제
+
+reiew 전처리
+리뷰 작성 여부 생성
 ----------------------------------------------------------------------
 # 데이터 전처리: 결측치, 이상치(0, 음수, IQR) (고유값, 중복 데이터, 상관관계X)
 # df_order_reviews
@@ -90,17 +93,6 @@ seller_id
 shipping_limit_date = 배송마감시간
 price
 freight_value = 운송비
-
-# merge
-join_order_customer
-join_order_payments
-df_join_ocpi: o_df_customers, o_df_order_items, o_df_order_payments, o_df_products
-merge_full: merge_product_cate + df_join_ocpi
-
-(과제2 배송지연 확인용) inner_join
-1. df_order + df_order_items = join_order_items
-2. join_order_items + df_customers = jj_order_items_cu
-3. (seller_id) jj_order_items_cu + df_sellers = join_ois
 
 
 
