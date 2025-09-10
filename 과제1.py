@@ -777,13 +777,13 @@ plt.show()
 
 # 과제1.py
 
-def build_df_product_category_name_translation():
+def df_product_category_name_translation():
     # 여기서 df를 생성하거나 불러오기
     df_product_category_name_translation = ...  # 전처리/머지 코드
     return df_product_category_name_translation
 
 def main():
-    df = build_df_product_category_name_translation()
+    df = df_product_category_name_translation()
     # 여기에만 print나 그래프 코드 작성
     print(df.head())
     # plt.figure(); sns.heatmap(...); plt.show()
