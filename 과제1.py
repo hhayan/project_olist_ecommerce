@@ -775,18 +775,52 @@ for i, v in enumerate(region_sales_ratio):
 plt.tight_layout()
 plt.show()
 
+
 # 과제1.py
+import pandas as pd
+
+def df_products():
+    """
+    products 데이터 전처리 후 DataFrame 반환
+    """
+    df_products = pd.read_csv("./data/products_dataset.csv")
+
+    # 전처리 예시 (필요에 맞게 수정)
+    df_products = df_products.dropna(subset=["product_category_name"])
+    df_products = df_products.drop_duplicates()
+
+    return df_products
+
 
 def df_product_category_name_translation():
-    # 여기서 df를 생성하거나 불러오기
-    df_product_category_name_translation = ...  # 전처리/머지 코드
-    return df_product_category_name_translation
+    """
+    카테고리 번역 테이블 로드 후 DataFrame 반환
+    """
+    df_translation = pd.read_csv("./data/product_category_name_translation.csv")
+
+    # 전처리 예시 (필요에 맞게 수정)
+    df_translation = df_translation.dropna()
+    df_translation = df_translation.drop_duplicates()
+
+    return df_translation
+
 
 def main():
-    df = df_product_category_name_translation()
-    # 여기에만 print나 그래프 코드 작성
-    print(df.head())
-    # plt.figure(); sns.heatmap(...); plt.show()
+    # 함수 실행 확인 (직접 실행할 때만 동작)
+    df_p = df_products()
+    df_t = df_product_category_name_translation()
+
+    print("Products preview:")
+    print(df_p.head())
+
+    print("\nCategory translation preview:")
+    print(df_t.head())
+
+    # 여기서만 그래프/EDA 실행
+    # import matplotlib.pyplot as plt
+    # df_p['product_weight_g'].hist(bins=50)
+    # plt.show()
+
 
 if __name__ == "__main__":
     main()
