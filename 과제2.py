@@ -456,3 +456,97 @@ plt.ylabel("주(State)")
 plt.xlabel("상관계수")
 plt.tight_layout()
 plt.show()
+
+
+
+# 과제2.py
+from __future__ import annotations
+from pathlib import Path
+from typing import Optional
+import pandas as pd
+
+DATA_DIR = Path("./data")  # 👉 데이터 위치에 맞게 수정
+
+def _load_default_sources():
+    """필요하면 내부에서 기본 소스 로드(옵션). 경로/파일명 맞게 수정하세요."""
+    df_order         = pd.read_csv(DATA_DIR / "orders_dataset.csv", parse_dates=[
+        "order_purchase_timestamp", "order_approved_at",
+        "order_delivered_carrier_date", "order_delivered_customer_date",
+        "order_estimated_delivery_date"
+    ])
+    df_order_items   = pd.read_csv(DATA_DIR / "order_items_dataset.csv")
+    df_customers     = pd.read_csv(DATA_DIR / "customers_dataset.csv")
+    df_sellers       = pd.read_csv(DATA_DIR / "sellers_dataset.csv")
+    df_reviews       = pd.read_csv(DATA_DIR / "order_reviews_dataset.csv")
+    return df_order, df_order_items, df_customers, df_sellers, df_reviews
+
+def merge_oicsr(
+    df_order: Optional[pd.DataFrame] = None,
+    df_order_items: Optional[pd.DataFrame] = None,
+    df_customers: Optional[pd.DataFrame] = None,
+    df_sellers: Optional[pd.DataFrame] = None,
+    df_reviews: Optional[pd.DataFrame] = None,
+) -> pd.DataFrame:
+    """
+    O(orders) + I(order_items) + C(customers) + S(sellers) + R(reviews) 병합.
+    - 인자를 모두 None으로 두면 내부에서 기본 데이터 자동 로드.
+    - 어떤 DF든 넘겨주면 그 DF를 사용(혼합 가능).
+    - 출력/시각화/print 없음: '함수는 DF만 반환'
+    """
+    if any(x is None for x in [df_order, df_order_items, df_customers, df_sellers, df_reviews]):
+        _o, _i, _c, _s, _r = _load_default_sources()
+        df_order       = df_order       if df_order       is not None else _o
+        df_order_items = df_order_items if df_order_items is not None else _i
+        df_customers   = df_customers   if df_customers   is not None else _c
+        df_sellers     = df_sellers     if df_sellers     is not None else _s
+        df_reviews     = df_reviews     if df_reviews     is not None else _r
+
+    # --- 병합 로직 예시(컬럼명/키는 프로젝트에 맞게 조정) ---
+    df_oi = pd.merge(
+        df_order_items,
+        df_order[["order_id","customer_id","order_purchase_timestamp","order_approved_at",
+                  "order_delivered_carrier_date","order_delivered_customer_date",
+                  "order_estimated_delivery_date","order_status"]],
+        on="order_id", how="left"
+    )
+
+    df_oic = pd.merge(
+        df_oi,
+        df_customers[["customer_id","customer_city","customer_state"]],
+        on="customer_id", how="left"
+    )
+
+    df_oics = pd.merge(
+        df_oic,
+        df_sellers[["seller_id","seller_city","seller_state"]],
+        on="seller_id", how="left"
+    )
+
+    # 리뷰(주문 단위) 조인: 스코어만 예시
+    reviews_agg = df_reviews.groupby("order_id", as_index=False)["review_score"].mean().rename(
+        columns={"review_score":"review_score_mean"}
+    )
+    df_oicsr = pd.merge(df_oics, reviews_agg, on="order_id", how="left")
+
+    # 필요 시 파생 컬럼(예: 지연일)
+    if "order_delivered_customer_date" in df_oicsr and "order_estimated_delivery_date" in df_oicsr:
+        df_oicsr["delay_days"] = (
+            pd.to_datetime(df_oicsr["order_delivered_customer_date"]).dt.floor("d")
+            - pd.to_datetime(df_oicsr["order_estimated_delivery_date"]).dt.floor("d")
+        ).dt.days
+
+    # 불필요한 print/그래프 없음
+    return df_oicsr
+
+def main():
+    """모듈을 직접 실행했을 때만 돌리는 확인/시각화 코드(선택)."""
+    df_merged = merge_oicsr()
+    print("Merged shape:", df_merged.shape)
+    print(df_merged.head(3))
+    # 여기서만 그래프/EDA 작성 (예)
+    # import matplotlib.pyplot as plt
+    # df_merged["delay_days"].hist(bins=50)
+    # plt.show()
+
+if __name__ == "__main__":
+    main()
