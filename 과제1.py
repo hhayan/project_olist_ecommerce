@@ -774,3 +774,19 @@ for i, v in enumerate(region_sales_ratio):
     plt.text(i, v + 0.5, f"{v:.1f}%", ha='center')
 plt.tight_layout()
 plt.show()
+
+# 과제1.py
+
+def build_df_product_category_name_translation():
+    # 여기서 df를 생성하거나 불러오기
+    df_product_category_name_translation = ...  # 전처리/머지 코드
+    return df_product_category_name_translation
+
+def main():
+    df = build_df_product_category_name_translation()
+    # 여기에만 print나 그래프 코드 작성
+    print(df.head())
+    # plt.figure(); sns.heatmap(...); plt.show()
+
+if __name__ == "__main__":
+    main()
