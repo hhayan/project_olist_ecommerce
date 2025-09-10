@@ -94,5 +94,10 @@ shipping_limit_date = 배송마감시간
 price
 freight_value = 운송비
 
+on_time 컬럼 추가
+보통 delay_days = 실제 배송일 - 예상 배송일 로 계산합니다.
+on_time = (delay_days <= 0) → 정시 배송 여부 (True/False)
+즉,on_time=True → 예정일보다 같거나 빨리 도착 (정시/조기 배송)
+
 
 
