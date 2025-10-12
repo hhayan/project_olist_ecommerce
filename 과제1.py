@@ -11,10 +11,11 @@ from sklearn.ensemble import IsolationForest
 import warnings
 
 warnings.filterwarnings('ignore', category=UserWarning)
-# 파일들이 있는 폴더 경로
+import pandas as pd
+import os
+
 folder_path = 'C:/Users/mumu1/Desktop/project_movie_data/project_dataset'
 
-# 파일 이름을 변수에 할당
 o_df_customers = pd.read_csv(os.path.join(folder_path, 'olist_customers_dataset.csv'), encoding='ISO-8859-1')
 o_df_geolocation = pd.read_csv(os.path.join(folder_path, 'olist_geolocation_dataset.csv'), encoding='ISO-8859-1')
 o_df_order_items = pd.read_csv(os.path.join(folder_path, 'olist_order_items_dataset.csv'), encoding='ISO-8859-1')
@@ -37,6 +38,7 @@ df_products = o_df_products.copy()
 df_sellers = o_df_sellers.copy()
 df_product_category_name_translation = o_df_product_category_name_translation.copy()
 df_order = o_df_orders.copy()
+
 # 이상치 탐색
 dfs = {
     "customers": df_customers,
@@ -51,7 +53,7 @@ dfs = {
 }
 
 # 0, 음수 비율 + IQR 이상치 탐색 함수
-def check_data_quality(df, name):
+def check_products_dataset_quality(df, name):
     print(f"\n===== {name} =====")
     num_cols = df.select_dtypes(include="number").columns
     if len(num_cols) == 0:
@@ -76,7 +78,7 @@ def check_data_quality(df, name):
 
 # 실행
 for name, df in dfs.items():
-    check_data_quality(df, name)
+    check_products_dataset_quality(df, name)
 
 # 이상치 확인: order_item['price'],['fight_value]: 시각화
 # 고가의 구매제품 존재, 
@@ -221,7 +223,7 @@ check_missing(original_dfs, df_names)
 # 결측치가 있는 모든 행 삭제
 df_products = df_products.dropna()
 
-# 결측치 삭제 후 DataFrame 출력
+# 결측치 삭제 후 products_datasetFrame 출력
 print("결측치 삭제 후 DataFrame:")
 print(df_products.info())
 print("-" * 30)
@@ -774,34 +776,3 @@ for i, v in enumerate(region_sales_ratio):
     plt.text(i, v + 0.5, f"{v:.1f}%", ha='center')
 plt.tight_layout()
 plt.show()
-
-
-# 과제1.py
-import pandas as pd
-df_products = pd.read_csv("./data/products_dataset.csv")
-df_products = df_products.dropna(subset=["product_category_name"])
-df_products = df_products.drop_duplicates()
-
-df_translation = pd.read_csv("./data/product_category_name_translation.csv")
-df_translation = df_translation.dropna()
-df_translation = df_translation.drop_duplicates()
-
-def main():
-    # 함수 실행 확인 (직접 실행할 때만 동작)
-    df_p = df_products()
-    df_t = df_product_category_name_translation()
-
-    print("Products preview:")
-    print(df_p.head())
-
-    print("\nCategory translation preview:")
-    print(df_t.head())
-
-    # 여기서만 그래프/EDA 실행
-    # import matplotlib.pyplot as plt
-    # df_p['product_weight_g'].hist(bins=50)
-    # plt.show()
-
-
-if __name__ == "__main__":
-    main()
