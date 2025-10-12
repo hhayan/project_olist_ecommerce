@@ -778,32 +778,13 @@ plt.show()
 
 # 과제1.py
 import pandas as pd
+df_products = pd.read_csv("./data/products_dataset.csv")
+df_products = df_products.dropna(subset=["product_category_name"])
+df_products = df_products.drop_duplicates()
 
-def df_products():
-    """
-    products 데이터 전처리 후 DataFrame 반환
-    """
-    df_products = pd.read_csv("./data/products_dataset.csv")
-
-    # 전처리 예시 (필요에 맞게 수정)
-    df_products = df_products.dropna(subset=["product_category_name"])
-    df_products = df_products.drop_duplicates()
-
-    return df_products
-
-
-def df_product_category_name_translation():
-    """
-    카테고리 번역 테이블 로드 후 DataFrame 반환
-    """
-    df_translation = pd.read_csv("./data/product_category_name_translation.csv")
-
-    # 전처리 예시 (필요에 맞게 수정)
-    df_translation = df_translation.dropna()
-    df_translation = df_translation.drop_duplicates()
-
-    return df_translation
-
+df_translation = pd.read_csv("./data/product_category_name_translation.csv")
+df_translation = df_translation.dropna()
+df_translation = df_translation.drop_duplicates()
 
 def main():
     # 함수 실행 확인 (직접 실행할 때만 동작)
