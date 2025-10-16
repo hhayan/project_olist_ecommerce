@@ -1,7 +1,54 @@
 ## project_ecommers_data
-Sesac LLM DATA  1차 프로젝트 
+
+분석 목표: 매출 증대 및 효과적인 투자
+
+사용 데이터:
+olist_customer
+olist_geolocation
+olist_orders
+olist_order_items
+olist_order_payments
+olist_order_reviews
+olist_products
+olist_sellers
 
 ## EDA
+1. 컬럼 이해
+
+
+2. 전처리 특이사항
+- 결측치
+olist_orders:
+
+order_reviews:
+(전처리 전)
+	결측수	결측율(%)
+review_comment_title	87656	88.34
+review_comment_message	58247	58.70
+(전처리 후): 제목있음, 내용있음 컬럼 추가
+전체 리뷰: 99,224개
+제목 있음: 11,568개 (11.7%)
+코멘트 있음: 40,977개 (41.3%)
+
+df_order_items 컬럼 추가
+df_order_items['The total order value'] : order_id별 총구매액
+df_order_items['Total Sales'] : 총매출
+
+- 이상치: 원본 보존
+
+3. EDA
+- df_order_items 가격과 배송료 상관관계:
+피어슨 상관계수: 0.414
+스피어맨 상관계수: 0.434
+거래비중
+전체의 90% 이상: 저가 상품 + 적당한 배송비
+전체의 5% 미만 : 고가 상품: 3,000~7,000 R$, 고액 배송비: 200~400 R$ (대형/무거운 상품)
+특이 패턴(가능성 염두)
+가격 0원 근처: 무료 증정/프로모션
+배송비 0원: 무료 배송 이벤트
+고가인데 저배송비: 고가 경량 상품 (전자제품 등)
+저가인데 고배송비: 저가 대형 상품 (가구 등)
+
 1. 기본 데이터 품질 점검
 -결측치, 이상치 확인
 가격(price), 배송비(freight_value), 리뷰(review_score) 등
@@ -47,7 +94,6 @@ df_order
 -전처리
 결측치 없음
 [배송시간] 이상치 없음
-비즈니스 로직 검증
 purchase → approved는 절대 음수가 될 수 없음 → 데이터 오류이므로 이상치 처리 
 approved → carrier도 음수는 말이 안 됨 → 이상치 처리.
 carrier → customer 역시 음수는 불가능 → 이상치 처리.
