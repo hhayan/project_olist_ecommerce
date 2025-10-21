@@ -142,3 +142,8 @@ not_defined    3 <- 이상치 처리: 해당 데이터만 삭제
 
 
 
+2. logistic
+주문 상태 delivered만 사용
+모든 컬럼이 존재하는 review_score 기준 분석 (has title, has comment 컬럼 삭제 처리 불필요)
+정시배송율 상/하위 5개 주 확보
+상/하위 5개 주에 대해 “리뷰 평균 점수 비교” 진행
