@@ -7,6 +7,7 @@ import optparse
 from scipy.stats import zscore
 from sklearn.ensemble import IsolationForest
 import warnings
+import os
 
 folder_path = "G:/내 드라이브/브라질 이커머스/project_olist_ecommerce/project_dataset"
 
@@ -26,7 +27,7 @@ df_order_payments = load_csv('olist_order_payments_dataset.csv')
 df_order_reviews  = load_csv('olist_order_reviews_dataset.csv')
 df_products       = load_csv('olist_products_dataset.csv')
 df_sellers        = load_csv('olist_sellers_dataset.csv')
-df_orders         = load_csv('olist_orders_dataset.csv')
+df_order          = load_csv('olist_orders_dataset.csv')
 df_product_category_name_translation = load_csv('product_category_name_translation.csv', encoding='utf-8-sig')
 
 # EDA  df_order
