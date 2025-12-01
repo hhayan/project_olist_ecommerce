@@ -8,30 +8,26 @@ from scipy.stats import zscore
 from sklearn.ensemble import IsolationForest
 import warnings
 
-# 파일들이 있는 폴더 경로
-folder_path = 'C:/Users/mumu1/Desktop/project_movie_data/project_dataset'
+folder_path = "G:/내 드라이브/브라질 이커머스/project_olist_ecommerce/project_dataset"
 
-# 파일 이름을 변수에 할당
-o_df_customers = pd.read_csv(os.path.join(folder_path, 'olist_customers_dataset.csv'), encoding='ISO-8859-1')
-o_df_geolocation = pd.read_csv(os.path.join(folder_path, 'olist_geolocation_dataset.csv'), encoding='ISO-8859-1')
-o_df_order_items = pd.read_csv(os.path.join(folder_path, 'olist_order_items_dataset.csv'), encoding='ISO-8859-1')
-o_df_order_payments = pd.read_csv(os.path.join(folder_path, 'olist_order_payments_dataset.csv'), encoding='ISO-8859-1')
-o_df_order_reviews = pd.read_csv(os.path.join(folder_path, 'olist_order_reviews_dataset.csv'), encoding='ISO-8859-1')
-o_df_products = pd.read_csv(os.path.join(folder_path, 'olist_products_dataset.csv'), encoding='ISO-8859-1')
-o_df_sellers = pd.read_csv(os.path.join(folder_path, 'olist_sellers_dataset.csv'), encoding='ISO-8859-1')
-o_df_product_category_name_translation = pd.read_csv(os.path.join(folder_path, 'product_category_name_translation.csv'), encoding='utf-8-sig')
-o_df_orders = pd.read_csv(os.path.join(folder_path, 'olist_orders_dataset.csv'), encoding='ISO-8859-1')
+def load_csv(filename, encoding='ISO-8859-1'):
+    path = os.path.join(folder_path, filename)
+    if os.path.exists(path):
+        return pd.read_csv(path, encoding=encoding)
+    else:
+        print(f"❌ 파일 없음: {filename}")
+        return None
 
-# 카피본 생성
-df_customers = o_df_customers.copy()
-df_geolocation = o_df_geolocation.copy()
-df_order_items = o_df_order_items.copy()
-df_order_payments = o_df_order_payments.copy()
-df_order_reviews = o_df_order_reviews.copy()
-df_products = o_df_products.copy()
-df_sellers = o_df_sellers.copy()
-df_product_category_name_translation = o_df_product_category_name_translation.copy()
-df_order = o_df_orders.copy()
+# 3. 데이터 로드
+df_customers      = load_csv('olist_customers_dataset.csv')
+df_geolocation    = load_csv('olist_geolocation_dataset.csv')
+df_order_items    = load_csv('olist_order_items_dataset.csv')
+df_order_payments = load_csv('olist_order_payments_dataset.csv')
+df_order_reviews  = load_csv('olist_order_reviews_dataset.csv')
+df_products       = load_csv('olist_products_dataset.csv')
+df_sellers        = load_csv('olist_sellers_dataset.csv')
+df_orders         = load_csv('olist_orders_dataset.csv')
+df_product_category_name_translation = load_csv('product_category_name_translation.csv', encoding='utf-8-sig')
 
 # EDA  df_order
 
