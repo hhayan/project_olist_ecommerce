@@ -9,30 +9,29 @@
 *   **고객 세분화:** RFM 분석을 통해 VIP, 충성 고객, 이탈 위험 고객 등을 분류하고 타겟 마케팅 전략 도출
 *   **배송 프로세스 최적화:** 배송 지연과 고객 만족도(리뷰 점수) 간의 상관관계 규명
 *   **리뷰 감성 분석:** 자연어 처리(NLP)를 통해 이탈 고객과 잠재 우수 고객의 니즈 파악
-
+--
 ### 데이터셋
-<img width="2486" height="1496" alt="image" src="https://github.com/user-attachments/assets/459cee62-46ea-420f-a009-5db5b29d1d2f" />
-
 Brazilian E-Commerce Public Dataset by Olist (Kaggle)
 이 데이터셋은 브라질 전자상거래 플랫폼 Olist에서 제공하는 공개 데이터입니다. 2016년부터 2018년 사이에 이루어진 주문 데이터를 포함하며 주문, 고객, 판매자, 제품, 결제, 리뷰, 지리정보 등을 분석할 수 있는 다차원적인 구조로 되어 있습니다.
+<img width="2486" height="1496" alt="image" src="https://github.com/user-attachments/assets/459cee62-46ea-420f-a009-5db5b29d1d2f" />
 
-## 데이터 구성 개요
+# 데이터 구성 개요
 파일 구성: 총 9개의 CSV 파일로 구성
 총 주문 수 (orders): 약 100,000건의 주문 데이터 포함  
 데이터 구조: 관계형 데이터베이스(Relational Database) 구조로, 각 테이블이 order_id, customer_id 등의 키(key)를 통해 서로 연결되어 있습니다. (Star Schema 형태)
 전체 컬럼 수: 약 54개 (모든 테이블 합계)
---
-📌 주문, 고객, 결제, 리뷰, 제품, 판매자, 지리정보, 카테고리명 번역
-파일명 (Dataset Name),행 (Rows),열 (Cols),설명
-olist_customers_dataset,"99,441",5,"고객 ID 및 주소지(우편번호, 도시, 주) 정보"
-olist_orders_dataset,"99,441",8,"주문 상태, 구매/배송/승인 시간 등 주문 핵심 정보"
-olist_order_items_dataset,"112,650",7,"주문된 상품 상세 정보 (가격, 배송비, 상품 ID 등)"
-olist_order_payments_dataset,"103,886",5,"결제 방식(신용카드, 볼레토 등), 할부, 결제 금액 정보"
-olist_order_reviews_dataset,"99,224",7,고객 리뷰 점수(1~5점) 및 리뷰 텍스트
-olist_products_dataset,"32,951",9,"상품 카테고리, 무게, 길이, 부피 등 상품 상세 스펙"
-olist_sellers_dataset,"3,095",4,판매자 ID 및 판매자 위치 정보
-olist_geolocation_dataset,"약 1,000,163",5,브라질 우편번호(Zip Code)에 따른 위도/경도 좌표 정보
-product_category_name_translation,71,2,포르투갈어 카테고리명을 영어로 번역한 매핑 테이블
+📌 테이블 개요: 주문, 고객, 결제, 리뷰, 제품, 판매자, 지리정보, 카테고리명 번역
+| 파일명 (Dataset Name) | 행 (Rows) | 열 (Cols) | 설명 |
+| :--- | :--- | :--- | :--- |
+| **olist_customers_dataset** | 99,441 | 5 | 고객 ID 및 주소지(우편번호, 도시, 주) 정보 |
+| **olist_orders_dataset** | 99,441 | 8 | 주문 상태, 구매/배송/승인 시간 등 주문 핵심 정보 |
+| **olist_order_items_dataset** | 112,650 | 7 | 주문된 상품 상세 정보 (가격, 배송비, 상품 ID 등) |
+| **olist_order_payments_dataset** | 103,886 | 5 | 결제 방식(신용카드, 볼레토 등), 할부, 결제 금액 정보 |
+| **olist_order_reviews_dataset** | 99,224 | 7 | 고객 리뷰 점수(1~5점) 및 리뷰 텍스트 |
+| **olist_products_dataset** | 32,951 | 9 | 상품 카테고리, 무게, 길이, 부피 등 상품 상세 스펙 |
+| **olist_sellers_dataset** | 3,095 | 4 | 판매자 ID 및 판매자 위치 정보 |
+| **olist_geolocation_dataset** | 약 1,000,163 | 5 | 브라질 우편번호(Zip Code)에 따른 위도/경도 좌표 정보 |
+| **product_category_name_translation** | 71 | 2 | 포르투갈어 카테고리명을 영어로 번역한 매핑 테이블 |
 ---
 
 ## 2. 기술 스택 (Tech Stack)
